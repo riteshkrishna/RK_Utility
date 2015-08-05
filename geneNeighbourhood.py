@@ -49,6 +49,8 @@ def process_gff(gffFile,blastFile,outFile):
     #    print("\n\n")
 
     blast_in = open(blastFile)
+    out_hits = open(outFile,'w')
+
     for line in blast_in:
         parts = line.split("\t")
         query_id = parts[0]
@@ -69,16 +71,17 @@ def process_gff(gffFile,blastFile,outFile):
                         ((subject_start <= sorted_geneListChrwise[chr_index][i-1][1]) and \
                         (subject_end >= sorted_geneListChrwise[chr_index][i-1][2])):
                         #print ("")
-                        print ("Overlapping : " + query_id  + "\t" + subject_id  + "\t" + sorted_geneListChrwise[chr_index][i-1][0])
+                        out_hits.write("Overlapping : " + query_id  + "\t" + subject_id  + "\t" + sorted_geneListChrwise[chr_index][i-1][0] + "\n")
                     else:
-                        print ("Non-Overlapping : " + query_id  + "\t" + subject_id  + "\t" + sorted_geneListChrwise[chr_index][i-1][0] + "\t" + sorted_geneListChrwise[chr_index][i][0])
+                        out_hits.write("Non-Overlapping : " + query_id  + "\t" + subject_id  + "\t" + sorted_geneListChrwise[chr_index][i-1][0] + "\t" + sorted_geneListChrwise[chr_index][i][0]+ "\n")
 
     blast_in.close()
+    out_hits.close()
     nonchr_out.close()
     gff_in.close()
 
 if __name__ == "__main__":
     gffFile = 'C:\Ritesh_Work\wheat\Triticum_aestivum.IWGSC1.0_popseq.27.gff3'
-    blastFile = 'C:\Ritesh_Work\wheat\out_61_blastn_hits_gt200.txt'
+    blastFile = 'C:\Ritesh_Work\wheat\out_61_blastn_hits_gt200_90p_eval05.txt'
     outFile = 'C:\Ritesh_Work\wheat\pyout.txt'
     process_gff(gffFile,blastFile,outFile)
